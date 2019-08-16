@@ -22,7 +22,7 @@ float middle = 0;
 float top = 0;
 float front = 0;
 float back = 0;
-
+float master = 0;
 struct MyWindow : App
 {
   
@@ -43,6 +43,7 @@ struct MyWindow : App
     ImGui::SliderFloat("Bottom", &bottom, 0.0f, 1.0f);
     ImGui::SliderFloat("Front", &front, 0.0f, 1.0f); 
     ImGui::SliderFloat("Back", &back, 0.0f, 1.0f);
+    ImGui::SliderFloat("Master", &master, 0.0f, 1.0f);
     
     // don't nav if imgui's using inputs
     // ex) prevents camera rotation when mouse dragging scroll bar
@@ -78,12 +79,17 @@ struct MyWindow : App
         float leftSample = *bufptr++;
         float rightSample = *bufptr++;
 
+        leftSample *= master;
+        rightSample *= master;
+
         for(int i = 0; i < io.channelsOut(); i++){
           //adjust gain for top, mid, bottom
 
           //adjust gain for front/back
           if(i < 7){//front bottom
             leftSample *= front;
+            rightSample *= front;
+            leftSample *= bottom;
             rightSample *= bottom;
             if(i < 4){
               io.out(i) = leftSample;
@@ -92,6 +98,8 @@ struct MyWindow : App
             }
           }else if(i > 16 && i < 32){//front mid
             leftSample *= front;
+            rightSample *= front;
+            leftSample *= middle;
             rightSample *= middle;
             if(i < 24){
               io.out(i) = leftSample;
@@ -100,6 +108,8 @@ struct MyWindow : App
             }
           }else if(i > 48 && i < 55){//front top
             leftSample *= front;
+            rightSample *= front;
+            leftSample *= top;
             rightSample *= top;
             if(i < 52){
               io.out(i) = leftSample;
@@ -109,6 +119,8 @@ struct MyWindow : App
           }
           if(i > 6 && i < 13){//back bottom
             leftSample *= back;
+            rightSample *= back;
+            leftSample *= bottom;
             rightSample *= bottom;
             if(i > 9){
               io.out(i) = leftSample;
@@ -117,6 +129,8 @@ struct MyWindow : App
             }
           }else if(i > 31 && i < 47){//front mid
             leftSample *= front;
+            rightSample *= front;
+            leftSample *= middle;
             rightSample *= middle;
             if(i > 39){
               io.out(i) = leftSample;
@@ -125,6 +139,8 @@ struct MyWindow : App
             }
           }else if(i > 54 && i < 61){//front top
             leftSample *= front;
+            rightSample *= front;
+            leftSample *= top;
             rightSample *= top;
             if(i > 57){
               io.out(i) = leftSample;
@@ -132,16 +148,9 @@ struct MyWindow : App
               io.out(i) = rightSample;
             }
           }
-
-
-
-
-          
         }
-
       }
   }
-
 };
 
 int main(int argc, char* argv[]) {
