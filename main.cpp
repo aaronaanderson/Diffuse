@@ -79,7 +79,64 @@ struct MyWindow : App
         float rightSample = *bufptr++;
 
         for(int i = 0; i < io.channelsOut(); i++){
-          io.out(i) = leftSample;
+          //adjust gain for top, mid, bottom
+
+          //adjust gain for front/back
+          if(i < 7){//front bottom
+            leftSample *= front;
+            rightSample *= bottom;
+            if(i < 4){
+              io.out(i) = leftSample;
+            }else{
+              io.out(i) = rightSample;
+            }
+          }else if(i > 16 && i < 32){//front mid
+            leftSample *= front;
+            rightSample *= middle;
+            if(i < 24){
+              io.out(i) = leftSample;
+            }else{
+              io.out(i) = rightSample;
+            }
+          }else if(i > 48 && i < 55){//front top
+            leftSample *= front;
+            rightSample *= top;
+            if(i < 52){
+              io.out(i) = leftSample;
+            }else{
+              io.out(i) = rightSample;
+            }
+          }
+          if(i > 6 && i < 13){//back bottom
+            leftSample *= back;
+            rightSample *= bottom;
+            if(i > 9){
+              io.out(i) = leftSample;
+            }else{
+              io.out(i) = rightSample;
+            }
+          }else if(i > 31 && i < 47){//front mid
+            leftSample *= front;
+            rightSample *= middle;
+            if(i > 39){
+              io.out(i) = leftSample;
+            }else{
+              io.out(i) = rightSample;
+            }
+          }else if(i > 54 && i < 61){//front top
+            leftSample *= front;
+            rightSample *= top;
+            if(i > 57){
+              io.out(i) = leftSample;
+            }else{
+              io.out(i) = rightSample;
+            }
+          }
+
+
+
+
+          
         }
 
       }
