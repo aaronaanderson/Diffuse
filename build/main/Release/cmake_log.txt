@@ -1,13 +1,13 @@
+-- Selecting Windows SDK version 10.0.17134.0 to target Windows 10.0.18362.
 -- ==== Configuring Gamma.
--- Checking for module 'libsndfile'
---   No package 'libsndfile' found
+-- Could NOT find PkgConfig (missing: PKG_CONFIG_EXECUTABLE) 
 -- Found SNDFILE 
--- libsndfile: /usr/local/lib/libsndfile.dylib
+-- libsndfile: C:/Program Files/Mega-Nerd/libsndfile/lib/libsndfile-1.lib
 -- threading: 
--- Could NOT find Vulkan (missing:  VULKAN_LIBRARY VULKAN_INCLUDE_DIR) 
--- Using Cocoa for window creation
--- Using libsndfile: /usr/local/lib/libsndfile.dylib
--- Using fftw3: /usr/local/lib/libfftw3f.dylib
+-- Could NOT find Vulkan (missing: VULKAN_LIBRARY VULKAN_INCLUDE_DIR) 
+-- Using Win32 for window creation
+-- Could NOT find PkgConfig (missing: PKG_CONFIG_EXECUTABLE) 
+-- Using libsndfile: C:/Program Files/Mega-Nerd/libsndfile/lib/libsndfile-1.lib
 -- Configuring done
 -- Generating done
--- Build files have been written to: /Users/sphere/code/Anderson/Diffuse/build/main/Release
+-- Build files have been written to: C:/Users/Anderson/Desktop/Diffuse/build/main/Release

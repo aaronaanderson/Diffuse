@@ -1,3 +1,4 @@
+    
 # You can set verbose cmake messages:
 set(AL_VERBOSE_OUTPUT 1)
 
@@ -27,7 +28,6 @@ set(app_definitions
 # compile flags
 # This flag ignores unused variable warning. You probably don't want to do this...
 set(app_compile_flags
-    -Wno-unused-variable
 )
 
 # linker flags, with `-` in the beginning

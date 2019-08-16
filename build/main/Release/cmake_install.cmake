@@ -1,8 +1,8 @@
-# Install script for directory: /Users/sphere/code/Anderson/Diffuse/allolib/cmake/single_file
+# Install script for directory: C:/Users/Anderson/Desktop/Diffuse/allolib/cmake/single_file
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/usr/local")
+  set(CMAKE_INSTALL_PREFIX "C:/Program Files/Project")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -27,9 +27,14 @@ if(NOT CMAKE_INSTALL_COMPONENT)
   endif()
 endif()
 
+# Is this installation the result of a crosscompile?
+if(NOT DEFINED CMAKE_CROSSCOMPILING)
+  set(CMAKE_CROSSCOMPILING "FALSE")
+endif()
+
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/Users/sphere/code/Anderson/Diffuse/allolib/build/Release/cmake_install.cmake")
+  include("C:/Users/Anderson/Desktop/Diffuse/allolib/build/cmake_install.cmake")
 
 endif()
 
@@ -41,5 +46,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/sphere/code/Anderson/Diffuse/build/main/Release/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/Anderson/Desktop/Diffuse/build/main/Release/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
