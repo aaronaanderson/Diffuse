@@ -23,7 +23,7 @@ float top = 0;
 float front = 0;
 float back = 0;
 float rotation = 0;
-Vec2f rotationVector = {sin(0), cos(0)};
+Vec2f rotationVector(cos(rotation), sin(rotation));
 float focus = 1.0;
 float master = 0;
 float* bufferPointer;
@@ -67,9 +67,7 @@ struct MyWindow : App{
   void onDraw(Graphics& g) override {
     g.clear(0.5);
     g.pushMatrix();
-
     g.popMatrix();
-
     endIMGUI();
   }
 
@@ -83,122 +81,57 @@ struct MyWindow : App{
     float buffer[AUDIO_BLOCK_SIZE*2];
     soundFile.read(buffer, AUDIO_BLOCK_SIZE);
     float* bufptr = buffer;
-      /*
-      while(io()) {
-        float leftSample = *bufptr++;
-        float rightSample = *bufptr++;
+      
+    while(io()) {
+      float leftSample = *bufptr++;
+      float rightSample = *bufptr++;
 
-        leftSample *= master;
-        rightSample *= master;
-        rotationVector = Vec2f(sin(rotation), cos(rotation));
-        for(int i = 0; i < speakerLayout.numSpeakers(); i++){//for every speaker.
-          int whichLayer = speakerLayout.speakers()[i].group;
-          switch (whichLayer){
-              case 0://bottom
-              leftSample *= bottom;
-              rightSample *= bottom;
-              break;
+      leftSample *= master;
+      rightSample *= master;
+      rotationVector = Vec2f(cos(rotation), sin(rotation));
+      
+      for(int i = 0; i < io.channelsOut(); i++){//for every speaker.
+        int whichLayer = speakerLayout.speakers()[i].group;
 
-              case 1://middle
-              leftSample *= middle;
-              rightSample *= middle;
-              break;
+        //adjust samples for top, middle, and bottom
+        switch (whichLayer){
+          case 0://bottom
+          leftSample *= bottom;
+          rightSample *= bottom;
+          break;
 
-              case 2://top
-              leftSample *= top;
-              rightSample *= top;
-              break;
-          }
+          case 1://middle
+          leftSample *= middle;
+          rightSample *= middle;
+          break;
 
-          if(speakerLayout.speakers()[i].azimuth > 0.0){
-            leftSample *= front;
-            rightSample *= front;
-          }else{
-            leftSample *= back;
-            rightSample *= back;
-          }
-          Vec2f speakerVector = Vec2f(sin(speakerLayout.speakers()[i].azimuth),cos(speakerLayout.speakers()[i].azimuth));
-          float whichSide = rotationVector.dot(speakerVector);//negative for left, positive for right
-          if(whichSide < 0.0f){
-            leftSample *= whichSide;
-            //io.out(leftSample);
-          }else{
-            rightSample *= -whichSide;
-            //io.out(rightSample);
-          }
+          case 2://top
+          leftSample *= top;
+          rightSample *= top;
+          break;
         }
-        */
-        /*
-        for(int i = 0; i < io.channelsOut(); i++){
-          //adjust gain for top, mid, bottom
 
-          //adjust gain for front/back
-          if(i < 7){//front bottom
-            leftSample *= front;
-            rightSample *= front;
-            leftSample *= bottom;
-            rightSample *= bottom;
-            if(i < 4){
-              io.out(i) = leftSample;
-            }else{
-              io.out(i) = rightSample;
-            }
-          }else if(i > 16 && i < 32){//front mid
-            leftSample *= front;
-            rightSample *= front;
-            leftSample *= middle;
-            rightSample *= middle;
-            if(i < 24){
-              io.out(i) = leftSample;
-            }else{
-              io.out(i) = rightSample;
-            }
-          }else if(i > 48 && i < 55){//front top
-            leftSample *= front;
-            rightSample *= front;
-            leftSample *= top;
-            rightSample *= top;
-            if(i < 52){
-              io.out(i) = leftSample;
-            }else{
-              io.out(i) = rightSample;
-            }
-          }
-          if(i > 6 && i < 13){//back bottom
-            leftSample *= back;
-            rightSample *= back;
-            leftSample *= bottom;
-            rightSample *= bottom;
-            if(i > 9){
-              io.out(i) = leftSample;
-            }else{
-              io.out(i) = rightSample;
-            }
-          }else if(i > 31 && i < 47){//front mid
-            leftSample *= front;
-            rightSample *= front;
-            leftSample *= middle;
-            rightSample *= middle;
-            if(i > 39){
-              io.out(i) = leftSample;
-            }else{
-              io.out(i) = rightSample;
-            }
-          }else if(i > 54 && i < 61){//front top
-            leftSample *= front;
-            rightSample *= front;
-            leftSample *= top;  
-            rightSample *= top;
-            if(i > 57){
-              io.out(i) = leftSample;
-            }else{
-              io.out(i) = rightSample;
-            }
-          }
+        //adjust for front and back  
+        if(speakerLayout.speakers()[i].azimuth > 0.0){
+          leftSample *= front;
+          rightSample *= front;
+        }else{
+          leftSample *= back;
+          rightSample *= back;
         }
-        
+
+        //distribute left and right input channel
+        Vec2f speakerVector = Vec2f(cos(speakerLayout.speakers()[i].azimuth),sin(speakerLayout.speakers()[i].azimuth));
+        float whichSide = rotationVector.dot(speakerVector);//negative for left, positive for right
+        if(whichSide < 0.0f){
+          leftSample *= pow(whichSide, focus);
+          io.out(leftSample);
+        }else{
+          rightSample *= pow(-whichSide, focus);
+          io.out(rightSample);
+        }
       }
-      */
+    }
   }
 };
 
