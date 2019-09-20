@@ -138,7 +138,9 @@ struct MyWindow : App{
 int main(int argc, char* argv[]) {
 
   MyWindow win;
-  win.initAudio(44100, AUDIO_BLOCK_SIZE, 2, 0);
+  auto dev = AudioDevice("ECHO X5");
+  // win.initAudio(44100, AUDIO_BLOCK_SIZE, 2, 0);
+  win.initAudio(dev, 44100, AUDIO_BLOCK_SIZE, 2, 0);
   win.start();
     return 0;
 }
